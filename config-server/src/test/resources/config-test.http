@@ -1,0 +1,7 @@
+### 기본 설정 파일 조회 (application.yml)
+GET http://localhost:8888/application/default
+Accept: application/json
+
+#### 특정 애플리케이션의 dev 프로파일 설정 조회
+#GET http://localhost:8888/myapp/dev
+#Accept: application/json
