@@ -14,3 +14,18 @@ spring:
           uri: https://github.com/HyeonGiMin/wimp-config-repo
           username: HyeonGi Min
           password: ${GITHUB_TOKEN}
+
+  boot:
+    admin:
+      client:
+        url: http://localhost:9090
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+  endpoint:
+    health:
+      show-details: always

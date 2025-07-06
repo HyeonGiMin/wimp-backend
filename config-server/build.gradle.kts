@@ -16,10 +16,14 @@ dependencies {
     implementation("org.springframework.cloud:spring-cloud-config-server")
     implementation("org.springframework.boot:spring-boot-starter-web")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    implementation("de.codecentric:spring-boot-admin-starter-client")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+
 }
 
 dependencyManagement {
     imports {
         mavenBom("org.springframework.cloud:spring-cloud-dependencies:2023.0.1")
+        mavenBom("de.codecentric:spring-boot-admin-dependencies:3.1.8")
     }
 }
