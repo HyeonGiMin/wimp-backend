@@ -39,3 +39,7 @@ dependencyManagement {
         mavenBom("de.codecentric:spring-boot-admin-dependencies:3.1.8")
     }
 }
+
+tasks.bootJar {
+    archiveFileName.set("config-server.jar") // 또는 config-server.jar 등 원하는 이름
+}
