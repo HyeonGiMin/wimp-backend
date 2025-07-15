@@ -1,0 +1,35 @@
+pipeline {
+    agent any
+
+    parameters {
+        string(name: 'APPLICATION_VERSION', defaultValue: 'latest', description: 'Docker Image Version')
+    }
+
+    environment {
+        IMAGE_NAME = "hyeoni1995/wimp-config-server"
+        APPLICATION_VERSION = "${params.APPLICATION_VERSION}"
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh './gradlew :config-server:bootJar  -PapplicationVersion='${params.APPLICATION_VERSION}''
+            }
+        }
+
+        stage('Docker Build & Push') {
+            steps {
+                sh """
+                    docker build -t ${IMAGE_NAME}:${APPLICATION_VERSION} ./config-server
+                    docker push ${IMAGE_NAME}:${APPLICATION_VERSION}
+                """
+            }
+        }
+    }
+}

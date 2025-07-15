@@ -12,6 +12,18 @@ repositories {
     mavenCentral()
 }
 
+tasks.named<org.springframework.boot.gradle.tasks.bundling.BootJar>("bootJar") {
+    // applicationVersion 파라미터가 있으면 그 값을, 없으면 기본 project.version 사용
+    val jarVersion = if (project.hasProperty("applicationVersion")) {
+        project.property("applicationVersion") as String
+    } else {
+        project.version.toString()
+    }
+    archiveVersion.set(jarVersion)
+}
+
+
+
 dependencies {
     implementation("org.springframework.cloud:spring-cloud-config-server")
     implementation("org.springframework.boot:spring-boot-starter-web")
