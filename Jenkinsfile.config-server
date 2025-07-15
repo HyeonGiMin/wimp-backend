@@ -19,7 +19,7 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh './gradlew :config-server:bootJar  -PapplicationVersion='${params.APPLICATION_VERSION}''
+                sh "./gradlew :config-server:bootJar  -PapplicationVersion=${params.APPLICATION_VERSION}"
             }
         }
 
