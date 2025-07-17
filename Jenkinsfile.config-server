@@ -35,39 +35,30 @@ pipeline {
         stage('Deploy to Oracle Cloud via SSH (Docker)') {
             steps {
                 withCredentials([string(credentialsId: 'WIMP_GITHUB_TOKEN', variable: 'WIMP_GITHUB_TOKEN')]) {
-                    sshPublisher(
-                        publishers: [
-                            sshPublisherDesc(
-                                configName: 'Oracle Cloud',
-                                transfers: [
-                                    sshTransfer(
-                                        sourceFiles: '',
-                                        removePrefix: '',
-                                        remoteDirectory: '',
-                                        execCommand: """
-                                            echo "[1] Pulling Docker image..."
-                                            docker pull ${IMAGE_NAME}:${APPLICATION_VERSION}
+                    sshCommand remote: [
+                        host: 'YOUR_ORACLE_CLOUD_IP_OR_HOSTNAME',
+                        user: 'YOUR_SSH_USER',
+                        identityFile: '/path/to/your/private/key' // 또는 credentialsId 사용 가능
+                        // port: 22, // 필요시 포트 지정
+                    ], command: """
+                        echo "[1] Pulling Docker image..."
+                        docker pull ${IMAGE_NAME}:${APPLICATION_VERSION}
 
-                                            echo "[2] Stopping old container (if exists)..."
-                                            docker stop wimp-config-server || true
-                                            docker rm wimp-config-server || true
+                        echo "[2] Stopping old container (if exists)..."
+                        docker stop wimp-config-server || true
+                        docker rm wimp-config-server || true
 
-                                            echo "[3] Running new container..."
-                                            docker run -d \\
-                                                --name wimp-config-server \\
-                                                -p 8888:8888 \\
-                                                -e GITHUB_TOKEN=${WIMP_GITHUB_TOKEN} \\
-                                                -e ADMIN_SERVER_URL=http://oci-hyeoni1995.duckdns.org:9090 \\
-                                                -e SPRING_BOOT_ADMIN_CLIENT_INSTANCE_SERVICE_BASE_URL=http://oci-hyeoni1995.duckdns.org:18888 \\
-                                                ${IMAGE_NAME}:${APPLICATION_VERSION}
+                        echo "[3] Running new container..."
+                        docker run -d \
+                            --name wimp-config-server \
+                            -p 8888:8888 \
+                            -e GITHUB_TOKEN=${WIMP_GITHUB_TOKEN} \
+                            -e ADMIN_SERVER_URL=http://oci-hyeoni1995.duckdns.org:9090 \
+                            -e SPRING_BOOT_ADMIN_CLIENT_INSTANCE_SERVICE_BASE_URL=http://oci-hyeoni1995.duckdns.org:18888 \
+                            ${IMAGE_NAME}:${APPLICATION_VERSION}
 
-                                            echo "[✔] Deployment completed for wimp-config-server"
-                                        """
-                                    )
-                                ]
-                            )
-                        ]
-                    )
+                        echo "[✔] Deployment completed for wimp-config-server"
+                    """
                 }
             }
         }
