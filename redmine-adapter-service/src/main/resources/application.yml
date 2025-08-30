@@ -1,0 +1,9 @@
+redmine:
+    base-url: ${REDMINE_BASE_URL}
+    api-key: ${REDMINE_API_KEY}
+
+server:
+    port: 8089
+# spring:
+#   config:
+#     import: "optional:configserver:"
