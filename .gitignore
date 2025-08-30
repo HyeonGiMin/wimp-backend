@@ -47,3 +47,4 @@ bin/
 .DS_Store
 /.idea/
 config-server/.env
+/notion-adapter-service/.env
